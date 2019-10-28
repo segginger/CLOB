@@ -1,0 +1,10 @@
+Good infos:
+Bashrc changes:                 export DISPLAY=127.0.0.1:0.0
+                                export CXX=/usr/bin/g++
+Start ubuntu in Windows:        Start-> ubuntu
+Use e drive for files:          cd /mnt/e/MyFirstProject
+Creates CMake configuration:    cmake -H. -Bbuild
+Builds output program:          cmake --build build -- -j3
+Boost unit test:                https://www.boost.org/doc/libs/1_45_0/libs/test/doc/html/tutorials/hello-the-testing-world.html
+
+cmake wiki: https://tuannguyen68.gitbooks.io/learning-cmake-a-beginner-s-guide/content/chap1/chap1.html
