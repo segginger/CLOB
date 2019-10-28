@@ -19,6 +19,8 @@ namespace
   string FULLY_FILLED_STR     = "fully filled";
   string CANCELLED_STR        = "cancelled";
   string ERR_STR              = "ERR";
+  string BUY_STR              = "buy";
+  string SELL_STR             = "sell";
 }
 
 class ClobState
@@ -54,6 +56,47 @@ class ClobState
   private:
     ClobState();                                // not defined
     ClobState& operator=( const ClobState& a ); // not defined
+};
+
+class BuySell
+{
+  private:
+    bool m_isBuy;
+  
+  public:
+    BuySell( const string& a )
+    {
+      if ( a == BUY_STR )
+      {
+        m_isBuy = true;
+      }
+      m_isBuy = false;
+    }
+    
+    virtual ~BuySell() {};
+    
+    bool operator==( const BuySell& a )
+    {
+      return m_isBuy == a.m_isBuy;
+    }
+    
+    bool isBuy()
+    {
+      return m_isBuy;
+    }
+    
+    static bool getIsBuy( const string& a )
+    {
+      if ( a == BUY_STR )
+      {
+        return true;
+      }
+      return false;
+    }
+
+  private:
+    BuySell();                                  // not defined
+    const BuySell& operator=(const BuySell& a); // not defined
 };
 
 #endif // CLOB_BASIC
