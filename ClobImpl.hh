@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "ClobBasic.hh"
+#include "ClobOrder.hh"
 
 using namespace std;
 
@@ -13,51 +14,36 @@ class ClobParser; // forward declaration
 class ClobImpl
 {
   private:
-    ClobParser* m_parser;
+    ClobParser*      m_parser;
+    double           m_tickSize;
+    ClobOrders       m_clobOrders; // active group
+    ClobOrders       m_histOrders; // processed/cancelled group, for speed
+                                   // as over time this will grow a lot
   
   public:
-    ClobImpl();
+    ClobImpl( const double tickSize );
     
     virtual ~ClobImpl();
     
-    void insertOrder( long id,
-                      bool isBuy,
-                      long quantity,
-	              double price )
-    {
-      cout << "insertOrder called for " << id << "|"
-                                        << isBuy << "|"
-                                	<< quantity << "|"
-					<< price << endl;
-    }
+    void insertOrder( long   id,
+                      bool   isBuy,
+                      long   quantity,
+                      double price );
 
-    void cancelOrder( long id )
-    {
-      cout << "cancelOrder called for " << id << endl;
-    }
+    void cancelOrder( long id );
 
     void amendOrder( long id,
-                     long newQuantity )
-    {
-      cout << "amendOrder called for " << id << "|"
-                                       << newQuantity << endl;
-    }
+                     long newQuantity );
 
     void queryLevel( string bidAsk,
-                     long   level )
-    {
-      cout << "queryLevel called for " << bidAsk << "|"
-                                       << level << endl;
-    }
+                     long   level );
 
-    void queryOrder( long id )
-    {
-      cout << "queryOrder called for " << id << endl;
-    }
+    void queryOrder( long id );
 
     int parseInput();
     
   private:
+    ClobImpl();                               // not defined
     ClobImpl& operator=( const ClobImpl& a ); // not defined
     bool operator==( const ClobImpl& a );     // not defined
 };

@@ -2,16 +2,17 @@
 #include <string>
 #include "ClobImpl.hh"
 
+namespace
+{
+  const double tickSize = 0.05; // fix on an exchange where this app runs on
+}
+
 int main( int    argc, 
           char** argv )
 {
   cout << "Welcome to the Central Limit Order Book" << endl;
   
-  // TODO: help?
-  // TODO: threading
-  // TODO: enums?
-  
-  ClobImpl* impl = new ClobImpl(); // the one doing the work
+  ClobImpl* impl = new ClobImpl( tickSize ); // the one doing the work
   int ret = 3; // assume something went wrong, if all goes well, it will correct
   try
   {

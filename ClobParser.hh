@@ -15,7 +15,6 @@ namespace
   const string IN_AMEND  = "amend";
   const string IN_QUERY  = "q";
   const string IN_LEVEL  = "level";
-  const double TICK_SIZE = 0.5; // TODO
 }
 
 class ClobParser
@@ -42,7 +41,7 @@ class ClobParser
 	  end = in.length();
 	}
 	string nextToken = in.substr( startPos+1, end-startPos-1 );
-        cout << "parsed string token: |" << nextToken << "|" << endl;
+        //cout << "parsed string token: |" << nextToken << "|" << endl;
 	startPos = end; // update the caller
 	return nextToken;
       }

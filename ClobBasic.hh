@@ -21,6 +21,8 @@ namespace
   string ERR_STR              = "ERR";
   string BUY_STR              = "buy";
   string SELL_STR             = "sell";
+  string BID_STR              = "bid";
+  string ASK_STR              = "ask";
 }
 
 class ClobState
@@ -43,7 +45,13 @@ class ClobState
     
     string getStr()
     {
-      switch ( m_state )
+      string tmp = getStateStr( m_state );
+      return tmp;
+    }
+    
+    static string getStateStr( const State state )
+    {
+      switch ( state )
       {
         case OPEN:             return OPEN_STR;
 	case PARTIALLY_FILLED: return PARTIALLY_FILLED_STR;
@@ -92,6 +100,24 @@ class BuySell
         return true;
       }
       return false;
+    }
+    
+    static bool getIsBuyFromBidAsk( const string& a )
+    {
+      if ( a == BID_STR )
+      {
+        return true;
+      }
+      return false;
+    }
+    
+    static string getBuySell( const bool isBuy )
+    {
+      if ( isBuy )
+      {
+        return BUY_STR;
+      }
+      return SELL_STR;
     }
 
   private:
