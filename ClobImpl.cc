@@ -127,8 +127,38 @@ void ClobImpl::amendOrder( long id,
 void ClobImpl::queryLevel( string bidAsk,
                            long   level )
 {
+  bool isBuy = BuySell::getIsBuyFromBidAsk( bidAsk );
   cout << "queryLevel called for " << bidAsk << "|"
+                                   << isBuy << "|"
                                    << level << endl;
+  ClobOrdersIt it  = m_clobOrders.begin();
+  ClobOrdersIt end = m_clobOrders.end();
+  size_t pos(0);
+  while ( it != end )
+  {
+    if ( it->getIsBuy() == isBuy )
+    {
+      if ( pos == level )
+      {
+        printOrder( *it, pos );
+	return;
+      }
+      ++pos;
+    }
+    ++it;
+  }
+}
+
+void ClobImpl::printOrder(       ClobOrder& a,
+                           const long       pos )
+{
+  cout << "Order information:" 
+       << " pos: " << pos
+       << " b/s: " << a.getBuySell()
+       << " remaining quantity: " << a.getQuantity()
+       << " price: " << a.getPrice()
+       << " status: " << ClobState::getStateStr( a.getState() )
+       << endl;
 }
 
 void ClobImpl::queryOrder( long id )
@@ -141,13 +171,7 @@ void ClobImpl::queryOrder( long id )
   {
     if ( it->getId() == id )
     {
-      cout << "Order information:" 
-           << " position: " << pos
-	   << " b/s: " << it->getBuySell()
-	   << " remaining quantity: " << it->getQuantity()
-	   << " price: " << it->getPrice()
-	   << " status: " << ClobState::getStateStr( it->getState() )
-	   << endl;
+      printOrder( *it, pos );
       return;
     }
     ++it;
@@ -159,13 +183,7 @@ void ClobImpl::queryOrder( long id )
   {
     if ( it->getId() == id )
     {
-      cout << "Order information:" 
-           << " position: " << pos
-	   << " b/s: " << it->getBuySell()
-	   << " remaining quantity: " << it->getQuantity()
-	   << " price: " << it->getPrice()
-	   << " status: " << ClobState::getStateStr( it->getState() )
-	   << endl;
+      printOrder( *it, pos );
       return;
     }
     ++it;

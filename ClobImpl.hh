@@ -42,6 +42,9 @@ class ClobImpl
 
     int parseInput();
     
+    void printOrder(       ClobOrder& a,
+                     const long       pos );
+    
   private:
     ClobImpl();                               // not defined
     ClobImpl& operator=( const ClobImpl& a ); // not defined

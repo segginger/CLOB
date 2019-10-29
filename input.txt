@@ -7,4 +7,8 @@ cancel 1002
 amend 1004 600
 q level ask 0
 q level bid 1
+q order 1001
+q order 1002
+q order 1003
 q order 1004
+q order 1005
