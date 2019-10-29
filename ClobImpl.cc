@@ -108,7 +108,7 @@ void ClobImpl::insertOrder( long   id,
   m_clobOrders.push_back( tmp );
 }
 
-void ClobImpl::cancelOrder( long id )
+bool ClobImpl::cancelOrder( long id )
 {
   cout << "cancelOrder called for " << id << endl;
   ClobOrdersIt it  = m_clobOrders.begin();
@@ -121,14 +121,14 @@ void ClobImpl::cancelOrder( long id )
       {
 	cout << "cancelOrder: found: " << *it << endl;
 	it->setCancelled();
-	break;
 	m_histOrders.push_back( *it );
 	m_clobOrders.erase( it );
-	return;
+	return true;
       }
     }
     ++it;
   }
+  return false;
 }
 
 void ClobImpl::amendOrder( long id,

@@ -29,7 +29,7 @@ class ClobImpl
                       long   quantity,
                       double price );
 
-    void cancelOrder( long id );
+    bool cancelOrder( long id );
 
     void amendOrder( long id,
                      long newQuantity );
