@@ -91,6 +91,11 @@ class ClobOrder
     void setCancelled()
     {
       m_state = CANCELLED;
+    }    
+    
+    void setState( const State state )
+    {
+      m_state = state;
     }
     
   private:

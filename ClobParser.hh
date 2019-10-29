@@ -68,7 +68,7 @@ class ClobParser
       size_t pos( string::npos );
       while ( std::getline(cin, line) ) 
       {
-	cout << "Did read: " << line << endl;
+	//cout << "Did read: " << line << endl;
 	if ( line.length() == 0 )
 	{
 	  cerr << "ERR: No input was read, exiting" << endl;

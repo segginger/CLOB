@@ -1,5 +1,6 @@
 #include "ClobImpl.hh"
 #include "ClobParser.hh"
+#include "ClobBasic.hh"
 
 namespace
 {
@@ -20,6 +21,16 @@ ClobImpl::~ClobImpl()
 int ClobImpl::parseInput()
 {
   return m_parser->parse();
+}
+
+long ClobImpl::min( const long val1,
+                    const long val2 )
+{
+  if ( val1 <= val1 )
+  {
+    return val1;
+  }
+  return val2;
 }
 
 void ClobImpl::insertOrder( long   id,
@@ -46,32 +57,55 @@ void ClobImpl::insertOrder( long   id,
     return;
   }
   
-  // matched the tick size, go on  
-  
+  // matched the tick size, go on create the order:
   ClobOrder tmp( id, isBuy, quantity, price );
-  ClobOrdersIt it  = m_clobOrders.begin();
-  ClobOrdersIt end = m_clobOrders.end();
-  while ( it != end )
-  {
-    cout << "insertOrder: found: " << *it << endl;
-    ++it;
-  }
-  //if ( it != m_clobBuyOrders.end() )
-  //{
-  //  cout << "Found for price: " << price << endl;
-  //}
-  //else
-  //{
-  //  cout << "Not found for price: " << price << endl;
-  //}
   
   // try to find a match:
   // a sell wants to find a buy
   // a buy wants to find a sell
   
-  // first insert it to be able to make stats out of it:
+  ClobOrdersIt it  = m_clobOrders.begin();
+  ClobOrdersIt end = m_clobOrders.end();
+  while ( it != end )
+  {
+    if ( it->getIsBuy() != isBuy )
+    {
+      // match found for buy/sell
+      if ( ( isBuy  && price >= it->getPrice() ) ||
+             !isBuy && price <= it->getPrice() )
+      {
+        cout << "match found: " << *it << endl;
+	
+	// can remove that matched amount for now:
+	long quantReduce = min( tmp.getQuantity(), it->getQuantity() );
+	
+	it->setQuantity( it->getQuantity() - quantReduce );
+	if ( it->getQuantity() == 0 )
+	{
+	  cout << "order fully matched with counterparty: move it to history" << endl;
+	  it->setState( FULLY_FILLED );
+	  m_histOrders.push_back( *it );
+	  m_clobOrders.erase( it );
+	}
+	tmp.setQuantity( tmp.getQuantity() - quantReduce );
+	if ( tmp.getQuantity() == 0 )
+	{
+	  cout << "input was put to the history" << endl;
+	  tmp.setState( FULLY_FILLED );
+	  m_histOrders.push_back( tmp );
+	  return; // no more matching possible
+	}
+	tmp.setState( PARTIALLY_FILLED );
+	cout << "fulfilled the match" << endl;
+	// continue with the order
+      }
+    }
+    ++it;
+  }
+  
+  
+  // move the remainder to the list
   m_clobOrders.push_back( tmp );
-  // TODO
 }
 
 void ClobImpl::cancelOrder( long id )
@@ -109,7 +143,7 @@ void ClobImpl::amendOrder( long id,
     cout << "amendOrder: found: " << *it << endl;
     if ( it->getId() == id )
     {
-      if ( it->getQuantity() > newQuantity )
+      if ( it->getQuantity() >= newQuantity )
       {
         it->setQuantity( newQuantity ); // amend down no penalty
       }
@@ -118,6 +152,7 @@ void ClobImpl::amendOrder( long id,
         it->setQuantity( newQuantity ); // amend up -> goes to end of list
 	m_clobOrders.erase( it );
 	m_clobOrders.push_back( *it );
+	return;
       }
     }
     ++it;
@@ -153,6 +188,7 @@ void ClobImpl::printOrder(       ClobOrder& a,
                            const long       pos )
 {
   cout << "Order information:" 
+       << " id: " << a.getId()
        << " pos: " << pos
        << " b/s: " << a.getBuySell()
        << " remaining quantity: " << a.getQuantity()

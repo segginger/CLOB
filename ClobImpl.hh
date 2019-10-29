@@ -4,7 +4,6 @@
 #include <string>
 #include <iostream>
 
-#include "ClobBasic.hh"
 #include "ClobOrder.hh"
 
 using namespace std;
@@ -44,6 +43,9 @@ class ClobImpl
     
     void printOrder(       ClobOrder& a,
                      const long       pos );
+		     
+    long min( const long val1,
+              const long val2 );
     
   private:
     ClobImpl();                               // not defined
