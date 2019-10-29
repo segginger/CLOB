@@ -82,7 +82,7 @@ void ClobImpl::insertOrder( long   id,
 	it->setQuantity( it->getQuantity() - quantReduce );
 	if ( it->getQuantity() == 0 )
 	{
-	  cout << "order fully matched with counterparty: move it to history" << endl;
+	  cout << "order fully matched with counterpart: move it to history" << endl;
 	  it->setState( FULLY_FILLED );
 	  m_histOrders.push_back( *it );
 	  m_clobOrders.erase( it );
@@ -140,9 +140,9 @@ void ClobImpl::amendOrder( long id,
   ClobOrdersIt end = m_clobOrders.end();
   while ( it != end )
   {
-    cout << "amendOrder: found: " << *it << endl;
     if ( it->getId() == id )
     {
+      cout << "amendOrder: found: " << *it << endl;
       if ( it->getQuantity() >= newQuantity )
       {
         it->setQuantity( newQuantity ); // amend down no penalty

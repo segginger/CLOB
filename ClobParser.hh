@@ -80,14 +80,11 @@ class ClobParser
 	  if ( pos != string::npos )
 	  {
             string action = line.substr( 0, pos );
-	    // TODO remove: cout << "Parsed: |" << action << "|" << endl; 
 
 	    if ( action == IN_ORDER )
 	    {
 	      long id = parseNextLong( line, pos );
-	      //cout << "did read id: " << id << endl;
 	      string buySell = parseNextParam( line, pos );
-	      //cout << "did read buySell: " << buySell << endl;;
 	      bool isBuy = BuySell::getIsBuy( buySell );
 	      long quantity = parseNextLong( line, pos );
 	      double price = parseNextDouble( line, pos );
